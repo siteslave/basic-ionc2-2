@@ -6,8 +6,12 @@ import {NavController} from 'ionic-angular';
 })
 export class HomePage {
 
+  myName: string
+  fullname: string
+  
   constructor(private navCtrl: NavController) {
-
+    this.myName = 'Steve Job'
+    this.fullname = 'Satit Rinapit'
   }
 
 }
