@@ -9,7 +9,8 @@
 
   <ion-list>
     <ion-item *ngFor="let e of employees">
-      {{ e.name }}
+      <ion-label>{{ e.name }}</ion-label>
+      <ion-toggle danger checked="true" *ngIf="e.id == 1002"></ion-toggle>
     </ion-item>
   </ion-list>
 
