@@ -1,12 +1,19 @@
 <ion-header>
   <ion-navbar primary>
     <ion-title>Home</ion-title>
+
+    <ion-buttons end>
+      <button (click)="logout()">
+        <ion-icon name="exit"></ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 </ion-header>
 
 <ion-content padding class="home">
   <h2>Welcome to Ionic!</h2>
-  <button primary>primary</button>
+  <button primary (click)="logout()">primary</button>
   <button secondary>secondary</button>
   <button danger>danger</button>
   <button light>light</button>
