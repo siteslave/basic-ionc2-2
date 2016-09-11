@@ -6,9 +6,23 @@
 
 <ion-content padding class="home">
   <h2>Welcome to Ionic!</h2>
-  <button primary>primary</button>
-  <button secondary>secondary</button>
-  <button danger>danger</button>
-  <button light>light</button>
-  <button favorite>favorite</button>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>แผนกหลัก</ion-label>
+      <ion-select okText="ตกลง" cancelText="ยกเลิก" 
+        [(ngModel)]="mainDep" (ionChange)="getSubDepartments()">
+        <ion-option *ngFor="let d of mainDepartments" 
+        [value]="d.id">{{ d.name }}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>แผนกย่อย</ion-label>
+      <ion-select multiple="true" [(ngModel)]="subDep">
+        <ion-option *ngFor="let d of subDepartments" 
+        [value]="d.id">{{ d.name }}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+
 </ion-content>
