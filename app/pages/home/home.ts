@@ -1,5 +1,10 @@
 import {Component} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, AlertController} from 'ionic-angular';
+
+import {SQLite} from 'ionic-native'
+
+import {NewEmployeePage} from '../new-employee/new-employee'
+import {EditEmployeePage} from '../edit-employee/edit-employee'
 
 @Component({
   templateUrl: 'build/pages/home/home.html'
@@ -7,38 +12,87 @@ import {NavController} from 'ionic-angular';
   
 export class HomePage {
 
-  mainDepartments: any[]
-  subDepartments: any[]
-  allSubDepartments: any[]
+  db: SQLite
+  employees: any[]
 
-  mainDep: number
-  subDep: number
+  constructor(private navCtrl: NavController, private alertCtrl: AlertController) {
+    this.db = new SQLite();
 
-  constructor(private navCtrl: NavController) {
-    
-    this.mainDepartments = [
-      { id: 1, name: 'การพยาบาล' },
-      { id: 2, name: 'ฝ่ายส่งเสริม' },
-      { id: 3, name: 'ศูนย์ประกัน' }
-    ]
-    
-    this.allSubDepartments = [
-      { id: 1, mainDep: 1, name: 'แผนก ER' },
-      { id: 2, mainDep: 2, name: 'ฝากครรภ์' },
-      { id: 3, mainDep: 2, name: 'ฉีดวัคซีน' },
-      { id: 4, mainDep: 3, name: 'ศูนย์คอมพิวเตอร์' }
-    ]
-
+    this.db.openDatabase({
+      name: 'employee.db',
+      location: 'default'
+    }).then(() => {
+      //
+    }, error => {
+      console.log(error)
+    });
   }
 
-  getSubDepartments() {
-    // alert(this.mainDep)
-    this.subDepartments = []
+  newEmployee() {
+    this.navCtrl.push(NewEmployeePage)
+  }
 
-    this.allSubDepartments.forEach(v => {
-      if (v.mainDep == this.mainDep) this.subDepartments.push(v)
-    })
+  getList() {
+    let sql = `SELECT * FROM employee`;
+    this.db.executeSql(sql, [])
+      .then((data) => {
+        this.employees = [];
 
+        if (data.rows.length > 0) {
+          for (let i = 0; i < data.rows.length; i++) {
+            this.employees.push({
+              id: data.rows.item(i).id,
+              firstname: data.rows.item(i).firstname,
+              lastname: data.rows.item(i).lastname,
+            })
+          }
+        }
+      }, error => {
+        console.log(error)
+      });
+  }
+
+  doRemove(id: number) {
+    this.showConfirm(id)
+  }
+
+
+  showConfirm(id: number) {
+    let confirm = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: 'คุณต้องการลบรายการนี้?',
+      buttons: [
+        {
+          text: 'ยกเลิก',
+          handler: () => {
+            // console.log('Disagree clicked');
+          }
+        },
+        {
+          text: 'ใช่',
+          handler: () => {
+            let sql = `DELETE FROM employee WHERE id=?`;
+            this.db.executeSql(sql, [id])
+              .then(() => {
+                this.getList()
+              }, error => {
+                console.log(error)
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  
+
+  edit(employee: Object) {
+    this.navCtrl.push(EditEmployeePage, employee)
+  }
+
+  ionViewDidEnter() {
+    this.getList()
   }
 
 }

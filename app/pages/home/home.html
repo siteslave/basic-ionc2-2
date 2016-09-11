@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar primary>
     <ion-title>Home</ion-title>
+    <ion-buttons end>
+      <button (click)="newEmployee()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -8,21 +13,22 @@
   <h2>Welcome to Ionic!</h2>
 
   <ion-list>
-    <ion-item>
-      <ion-label>แผนกหลัก</ion-label>
-      <ion-select okText="ตกลง" cancelText="ยกเลิก" 
-        [(ngModel)]="mainDep" (ionChange)="getSubDepartments()">
-        <ion-option *ngFor="let d of mainDepartments" 
-        [value]="d.id">{{ d.name }}</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label>แผนกย่อย</ion-label>
-      <ion-select multiple="true" [(ngModel)]="subDep">
-        <ion-option *ngFor="let d of subDepartments" 
-        [value]="d.id">{{ d.name }}</ion-option>
-      </ion-select>
-    </ion-item>
+    <ion-list-header>Employees list</ion-list-header>
+      <ion-item-sliding *ngFor="let e of employees">
+        <ion-item>
+          <h2>{{ e.firstname }} {{ e.lastname }}</h2>
+        </ion-item>
+        <ion-item-options side="right">
+          <button danger (click)="doRemove(e.id)">
+            <ion-icon name="trash"></ion-icon>
+            DELETE
+          </button>
+          <button secondary (click)="edit(e)">
+            <ion-icon name="create"></ion-icon>
+            EDIT
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
   </ion-list>
 
 </ion-content>
