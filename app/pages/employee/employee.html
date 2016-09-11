@@ -1,0 +1,27 @@
+
+<ion-header>
+
+  <ion-navbar primary>
+    <ion-title>Employee</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="employee">
+  <ion-list no-lines>
+    <ion-list-header>Main menu</ion-list-header>
+    <button ion-item (click)="goNewPage()">
+      <ion-icon name="person-add" large primary item-left></ion-icon>
+        เพิ่มพนักงานใหม่
+    </button>
+    <button ion-item (click)="goNewPage()">
+      <ion-icon name="search" large secondary item-left></ion-icon>
+        ค้นหา
+    </button>
+    <button ion-item (click)="goNewPage()">
+      <ion-icon name="people" large danger item-left></ion-icon>
+        รายชื่อพนักงาน
+    </button>
+  </ion-list>
+</ion-content>
